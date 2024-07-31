@@ -5,7 +5,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, People, Planet
+from models import db, User, People, Planet, Favorite
 #from models import Person
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -67,11 +67,11 @@ def get_users():
     return jsonify(users_list), 200
 
 #USER GET FAVS
-@app.route('/users/favorites', methods=['GET'])
+@app.route('/users/favorites/<int:user_id>', methods=['GET'])
 def get_user_favorites():
     user_id = request.args.get('user_id')
     user = User.query.get(user_id)
-    favorites = Favorite.query.filter_by(user_id=user.id).all()
+   ### favorites = Favorite.query.filter_by(user_id=user.id).all()
     favorites_list = [favorite.serialize() for favorite in favorites]
     return jsonify(favorites_list), 200
 
